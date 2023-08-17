@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>TABIL 2 Retrofit Setup Wizard</title>
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #fff;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #000; /* Heading text color set to black */
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #f6f6f6;
+    }
+
+    .styled-input {
+      text-align: left;
+      margin: 10px;
+    }
+
+    .styled-input label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .styled-input select,
+    .styled-input input {
+      padding: 8px;
+      border: 1px solid #002F6C; 
+      border-radius: 4px;
+      width: 120px;
+      background-color: #f6f6f6;
+    }
+
+    .styled-button {
+      margin-top: 20px;
+    }
+
+    .styled-button button {
+      padding: 10px 20px;
+      background-color: #002F6C; 
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .styled-button button:hover {
+      background-color: #002F6C; 
+    }
+
+    .time-selection {
+      text-align: left;
+      margin: 10px;
+    }
+
+    .time-selection label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .time-selection input[type="text"] {
+      padding: 8px;
+      border: 1px solid #00a5df;
+      border-radius: 4px;
+      background-color: #f6f6f6;
+    }
+
+    .instructions {
+      text-align: left;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f6f6f6;
+    }
+
+    /* Flexbox styles to align time selection fields */
+    .time-selection-flex {
+      display: flex;
+      align-items: center;
+    }
+
+    .time-selection-flex span {
+      margin: 0 5px;
+    }
+  </style>
+</head>
+
+<body onload="onload()">
+  <h1>TABIL 2.0 (Retrofit Install) Initial Setup Wizard</h1>
+
+  <div class="container">
+    <div class="styled-input">
+      <label for="stationID">Station ID:</label>
+      <select name="stationID" id="stationID">
+        <!-- Add options here if needed -->
+      </select>
+    </div>
+
+    <div class="styled-input">
+      <label for="bufferTime">Minimum Time Between Activations:</label>
+      <input type="text" id="bufferTime" name="bufferTime" placeholder="Seconds">
+    </div>
+
+    <div class="styled-input">
+      <label for="arrCountdown">Arrival Countdown:</label>
+      <input type="text" id="arrCountdown" name="arrCountdown" placeholder="Seconds">
+    </div>
+
+    <div class="styled-input">
+      <label for="platformCountdown">Platform Countdown:</label>
+      <input type="text" id="platformCountdown" name="platformCountdown" placeholder="Seconds">
+    </div>
+
+    <div class="time-selection">
+      <label>Weekday Time Selection:</label>
+      <div class="styled-input">
+        <label for="weekdayTimeRange1">Weekday Time Range 1:</label>
+        <input type="text" id="weekdaystart1" name="weekdaystart1" placeholder="Hour (0-23)">
+        <span>to</span>
+        <input type="text" id="weekdayend1" name="weekdayend1" placeholder="Hour (0-23)">
+      </div>
+
+      <div class="styled-input">
+        <label for="weekdayTimeRange1">Weekday Time Range 2:</label>
+        <input type="text" id="weekdaystart2" name="weekdaystart2" placeholder="Hour (0-23)">
+        <span>to</span>
+        <input type="text" id="weekdayend2" name="weekdayend2" placeholder="Hour (0-23)">
+      </div>
+    </div>
+
+    <div class="time-selection">
+      <label>Weekend Time Selection:</label>
+      <div class="styled-input">
+        <label for="weekendTimeRange1">Weekend Time Range 1:</label>
+        <input type="text" id="weekendstart1" name="weekendstart1" placeholder="Hour (0-23)">
+        <span>to</span>
+        <input type="text" id="weekendend1" name="weekendend1" placeholder="Hour (0-23)">
+      </div>
+
+      <div class="styled-input">
+        <label for="weekdayTimeRange1">Weekend Time Range 2:</label>
+        <input type="text" id="weekendstart2" name="weekendstart2" placeholder="Hour (0-23)">
+        <span>to</span>
+        <input type="text" id="weekendend2" name="weekendend2" placeholder="Hour (0-23)">
+      </div>
+    </div>
+
+    <br />
+
+    <div class="styled-button">
+      <button type="button" onclick="createFile()">Generate</button>
+    </div>
+  </div>
+
+  <!-- Instructions Section -->
+  <div class="instructions">
+    <h2>Instructions:</h2>
+    <p>
+      This is the initial setup wizard for the Train Approach Bus Indicator Light (TABIL) 2.0. The HTML form on this page
+      will generate a configuration file that will be stored in the 'folder' with the other files used to run the script.
+      To properly set up TABIL 2.0, ensure that the track circuit IDs for your station are in the 'track-circuits.csv' file.
+      Then, fill in the desired values for the following:
+    </p>
+    <ul>
+      <li>Minimum Time Between Activations (how long before the light is allowed to turn on after turning off)</li>
+      <li>Arrival Countdown (Countdown timer value in seconds once the train occupies the selected approach circuit)</li>
+      <li>Platform Countdown (Countdown timer value in seconds once the train occupies the selected platform circuit)</li>
+      <li>The weekday and weekend time ranges (times during the day when the TABIL will be active, must be entered in whole numbers between 0 and 23)</li>
+    </ul>
+    <p>
+      Click the "Generate" button to create the setup file.
+    </p>
+  </div>
+
+  <script src="static/index.js"></script>
+</body>
+
+</html>
